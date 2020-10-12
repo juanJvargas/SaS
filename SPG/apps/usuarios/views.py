@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from apps.usuarios.forms import SignUpForm
+from apps.usuarios.models import User
 from django.contrib import messages
 
 def listar_empleados():
-    return Empleado.get_info()
+    return User.get_empleados()
 
 def signup(request):
     # Usuario que hizo la peticion a la funcion (usuario que esta en la sesion)
@@ -22,15 +23,15 @@ def signup(request):
                 user = form.save(commit=False)
                 user.save()
 
-                return render(request, 'index.html',
-                              {'form': SignUpForm()})
+                return render(request, 'usuarios/signup.html',
+                              {'form': SignUpForm(), 'empleados': listar_empleados()})
             else:
                 #messages.error(request, 'Por favor corrige los errores')
-                return render(request, 'usuarios/signup.html', {'form': form})
+                return render(request, 'usuarios/signup.html', {'form': form, 'empleados': listar_empleados()})
         else:
             form = SignUpForm()
             return render(request, 'usuarios/signup.html',
-                          {'form': form})
+                          {'form': form, 'empleados': listar_empleados()})
     # En caso de que el usuario no sea admin se redirije al home y se muestra mensaje de error
     else:
         messages.error(request, 'No estas autorizado para realizar esta acción')

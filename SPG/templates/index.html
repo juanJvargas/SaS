@@ -41,14 +41,17 @@
             </div>
         </nav>
         <!-- Masthead-->
-        <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                {% block descripcion_pagina %}
-                {% endblock descripcion_pagina %}
-                {% block contenido %}
-                {% endblock contenido %}     
-            </div>
-        </header>
+
+        {% block contenido %}
+        {% endblock contenido %}     
+    
+        
+                
+                <!-- Icon Divider-->
+                
+                {% block contenido2 %}
+                {% endblock contenido2 %}
+                
         <!-- Footer-->
         <footer class="footer text-center">
             <div class="container">

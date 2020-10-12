@@ -1,68 +1,88 @@
- 
-
+{% extends 'index.html' %}
 {% load static %}
 {% load bootstrap3 %}
 
-{% block content %}
-
-<div class="col-md-12">
-    <div class="box box-primary">
-        <div class="box-header">
-            <h3 class="box-title">Registrar usuarios</h3>
-        </div>
-        <div class="box-body">
-            
-            <form method="post" id="formulario" onsubmit="return validacion()" action="{% url 'usuarios:registro' %}"> {% csrf_token %}
-                
-                <div class="row">
-                    <div class="col-sm-4">
-                        {% bootstrap_field form.first_name%}
-                    </div>
-                    <div class="col-sm-4">
-                        {% bootstrap_field form.last_name%}
-                    </div>
-                    <div class="col-sm-2">
-                        {% bootstrap_field form.cedula%}
-                    </div>
-                    <div class="col-sm-2">
-                        {% bootstrap_field form.telefono%}
-                    </div>
+{% block contenido %}
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Registrar usuarios</h3>
                 </div>
-
-                <div class="row">
-                    <div class="col-sm-2">
-                        {% bootstrap_field form.username%}
-                    </div>
-                    <div class="col-sm-4">
-                        {% bootstrap_field form.email%}
-                    </div>
-                    <div class="col-sm-2">
-                        {% bootstrap_field form.cargo%}
+                <div class="box-body">
                     
-                    </div>
-                    <div class="col-sm-2">
-                        {% bootstrap_field form.tenant%}
-                    
-                    </div>
-
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-3">
-                        <div class="col-sm-4">
-                            {% bootstrap_field form.password1%}
+                    <form method="post" id="formulario" onsubmit="return validacion()" action="{% url 'usuarios:registro' %}"> {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.first_name%}
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.last_name%}
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.cedula%}
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.telefono%}
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            {% bootstrap_field form.password2%}
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.username%}
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.direccion%}
+                            
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.email%}
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.cargo%}
+                            
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.tenant%}
+                            
+                            </div>
+                            
+
                         </div>
-                    </div>
+
+
+                        <div class="row">
+                        
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.password1%}
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.password2%}
+                            </div>
+                        
+                        </div>
+                        <button type="submit" class="btn btn-success btn-raised" id="registrar">Registrar</button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-success btn-raised" id="registrar">Registrar</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-
-{% endblock content %}
+</header>
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <div>
+        
+        </div>
+    </div>
+</section>
+{% endblock contenido %}
 

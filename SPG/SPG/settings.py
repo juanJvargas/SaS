@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+from .serversettings import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,10 @@ SECRET_KEY = 'q5k3l90y7b7387^l40j1apg=l^%&_*!!bi7w8^4))=j*=hux&$'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'usuarios.User'
+LOGIN_REDIRECT_URL = 'usuarios:home'
+LOGIN_URL = 'usuarios:login'
+LOGOUT_REDIRECT_URL = 'usuarios:login'
 
 # Application definition
 
@@ -37,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
 
-    'apps.prueba'
+    'apps.usuarios',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +61,10 @@ ROOT_URLCONF = 'SPG.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,12 +83,7 @@ WSGI_APPLICATION = 'SPG.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = DBCONFIG
 
 
 # Password validation
@@ -114,7 +117,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))

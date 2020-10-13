@@ -9,6 +9,9 @@ class User(AbstractUser):
     tenant = models.CharField(max_length=50)
     cargos = (('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Cliente', 'Cliente'))
     cargo = models.CharField(max_length=9, choices=cargos, default='Gerente')
+    activo = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    
     REQUIRED_FIELDS = ['first_name', 'last_name', 'cedula', 'email', 'is_active', 'cargo', 'telefono'
                         ,'cargo']
     USERNAME_FIELD = 'username'
@@ -18,7 +21,7 @@ class User(AbstractUser):
 
     def get_empleados():
         try:
-            empleados = User.objects.filter(cargo__in=('Gerente', 'Vendedor'))
+            empleados = User.objects.filter(cargo__in=('Gerente', 'Vendedor', 'Cliente'))
             return empleados
         except User.DoesNotExist:
             return None

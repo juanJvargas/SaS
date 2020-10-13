@@ -10,7 +10,7 @@ urlpatterns = [
                     template_name='usuarios/login.html'), name='login'),
     path('home', home, name='home'),
     path('gestion-empleados', signup, name='registro'),
-
+    path('editar/empleado/<int:id_user>', editar_empleado, name='modificar_empleado'),
 ]
 '''
     
@@ -19,7 +19,7 @@ urlpatterns = [
                                                           template_name='accounts/login.html')), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('ver-clientes', listar_clientes, name='clientes'),
-    path('editar/empleado/<int:id_user>', editar_empleado, name='modificar_empleado'),
+    
     path('editar-perfil-empleado', editar_perfil_empleado, name='editar_perfil_empleado'),
     path('editar-perfil', editar_perfil, name='editar_perfil_cliente'),
     path('api/consulta_sucursales', get_sucursales_disponibles, name= 'get_sucursales_disponibles'),

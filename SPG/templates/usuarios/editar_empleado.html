@@ -16,15 +16,59 @@
 {% block contenido %}
 <header class="masthead bg-primary text-white text-center">
     <div class="container d-flex align-items-center flex-column">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Editar empleado</h3>
                 </div>
                 <div class="box-body">
                     <form method="POST"> {% csrf_token %}
-                        {%   bootstrap_form form_empleado_extra %}
-                        {%   bootstrap_form form %}
+                        <div class="row">
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.first_name%}
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.last_name%}
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.email%}
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                {% bootstrap_field form.telefono%}
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form_empleado_extra.cedula%}
+                            
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form_empleado_extra.cargo%}
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form_empleado_extra.activo%}
+                            
+                            </div>
+                            <div class="col-sm-2">
+                                {% bootstrap_field form_empleado_extra.is_staff%}
+                            
+                            </div>
+                            
+
+                        </div>
+
+
+                        <div class="row">
+                        
+                            <div class="col-sm-2">
+                                {% bootstrap_field form_empleado_extra.tenant%}
+                            </div>
+                            <div class="col-sm-4">
+                                {% bootstrap_field form.direccion%}
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-success">Modificar</button>
                     </form>
                 </div>

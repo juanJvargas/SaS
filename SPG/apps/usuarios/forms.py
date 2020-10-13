@@ -100,6 +100,10 @@ class EditarEmpleadoExtra(forms.ModelForm):
         model = User
         fields = ('cedula', 'tenant', 'cargo', 'activo', 'is_staff')
 
+    widgets = {
+            'cargo': Select2Widget(),
+        }
+        
     def clean(self):
         cedula = self.cleaned_data['cedula']
         regex_cedula = re.compile('^[0-9]{8,11}$')

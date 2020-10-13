@@ -1,0 +1,119 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap3 %}
+
+
+
+{% block css %}
+{{ form_empleado.media.css }}
+<style media="screen">
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+{% endblock css %}
+
+{% block contenido %}
+<header class="masthead bg-primary text-white text-rigth">
+    <div class="container d-flex align-items-center flex-column">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Detalle empleado</h3>
+                </div>
+                <div class="box-body">
+                    <form method="POST"> {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>
+                                    Nombres del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.first_name }}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    Apelidos del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.last_name }}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    Correo electronico del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.email }}</p>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>
+                                    Telefono del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.telefono }}</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>
+                                    Cedula del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.cedula }}</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>
+                                    Cargo del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.cargo }}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    El usuario esta activo en el sistema
+                                </label>
+                                <p class="border-bottom">{{ datos.activo }}</p>
+                            </div>
+                            
+                            
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label>
+                                    Tenant del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.tenant }}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    Direccion del usuario
+                                </label>
+                                <p class="border-bottom">{{ datos.direccion }}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    El usuario tiene permisos del personal
+                                </label>
+                                <p class="border-bottom">{{ datos.is_staff }}</p>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">regresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+{% endblock contenido %}
+
+{% block js %}
+
+<script src="{% static 'dist/js/check_username.js' %}"></script>
+<script src="{% static 'dist/js/validacion_registro.js' %}"></script>
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+
+
+
+{{ form_empleado.media.js }}
+
+{% endblock js %}

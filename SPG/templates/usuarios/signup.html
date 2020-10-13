@@ -120,7 +120,9 @@
                             {% else %} <span class="badge bg-red">Inactivo</span>
                             {% endif %}
                         </td>
-                        <td><a href="{% url 'usuarios:modificar_empleado' empleado.id %}">Editar Empleado</a>
+                        <td>
+                            <a href="{% url 'usuarios:modificar_empleado' empleado.id %}">Editar</a>
+                            <a href="{% url 'usuarios:detalle_empleado' empleado.id %}">Detalle</a>
                         </td>
                     </tr>
                     {% endfor %}

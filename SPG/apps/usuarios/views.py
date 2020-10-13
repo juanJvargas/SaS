@@ -71,18 +71,16 @@ def editar_empleado(request, id_user):
         messages.error(request, 'No estas autorizado para realizar esta acción')
         return redirect('usuarios:home')
 
-def ActionsType_detail(request, id):
-    user = User.objects.get(id=id_user)
-    usuario = request.user
+def detalle_empleado(request, id_user):
     user = User.objects.get(id=id_user)
     usuario = request.user
     #Quitar el or true cuando se deje lsito el login 
     if usuario.is_staff or True:
         if request.method == 'GET':
-            form = EditarEmpleado(instance=user)
-            form_empleado_extra = EditarEmpleadoExtra(instance=user)
-            return render(request, 'usuarios/detalle_empleado.html', {'form': form,
-                                                                     'form_empleado_extra': form_empleado_extra})
+            return render(request, 'usuarios/detalle_empleado.html', {'datos': user})
+        elif request.method == 'POST':
+            return render(request, 'usuarios/signup.html',
+                              {'form': SignUpForm(), 'empleados': listar_empleados()})
 
     else:
         messages.error(request, 'No estas autorizado para realizar esta acción')

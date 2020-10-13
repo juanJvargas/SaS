@@ -11,6 +11,7 @@ urlpatterns = [
     path('home', home, name='home'),
     path('gestion-empleados', signup, name='registro'),
     path('editar/empleado/<int:id_user>', editar_empleado, name='modificar_empleado'),
+    path('detalle/empleado/<int:id_user>', detalle_empleado, name='detalle_empleado'),
 ]
 '''
     

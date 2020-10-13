@@ -6,11 +6,25 @@ from django import forms
 import re
 
 class SignUpForm(UserCreationForm):
+    labels = {
+        'first_name' : "Nombres",
+        'last_name': "Apellidos",
+        'cedula' : "Cedula",
+        'username' : "Usuario",
+        'email' : "Correo Electronico",
+        'password1' : "Contraseña",
+        'password2' : "Confirmación de Contraseña",
+        'telefono' : "Teléfono",
+        'direccion' : "Dirección",
+        'tenant' : "Tenant",
+        'cargo' : "Rol",
+        'activo' : "Activo",
+        'is_superuser' : "Es superusuario"
+    }
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'cedula', 'username', 'email', 'password1', 'password2',
                   'telefono', 'direccion', 'tenant', 'cargo', 'activo', 'is_superuser')
-
         widgets = {
             'cargo': Select2Widget(),
         }
@@ -20,9 +34,13 @@ class SignUpForm(UserCreationForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
         for fieldname in ['first_name', 'last_name', 'cedula', 'username', 'email', 'password1', 'password2',
-                  'telefono']:
+                  'telefono', 'activo', 'is_superuser']:
             self.fields[fieldname].help_text = None
             self.fields[fieldname].widget.attrs['placeholder'] = ''
+            self.fields[fieldname].label = self.labels[fieldname]
+        
+        self.fields['activo'].help_text = "Estado del usuario"
+        self.fields['is_superuser'].help_text = "Establecer si el usuario tiene permisos de superusuario"
 
     def clean(self):
         nombre = self.cleaned_data['first_name']
@@ -98,7 +116,7 @@ class EditarEmpleado(forms.ModelForm):
 class EditarEmpleadoExtra(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('cedula', 'tenant', 'cargo', 'activo', 'is_staff')
+        fields = ('cedula', 'tenant', 'cargo', 'activo', 'is_superuser')
 
     widgets = {
             'cargo': Select2Widget(),

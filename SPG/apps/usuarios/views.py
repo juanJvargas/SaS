@@ -43,6 +43,10 @@ def home(request):
     usuario = request.user
     return render(request, 'index.html', {})
 
+def landing(request):
+    usuario = request.user
+    return render(request, 'usuarios/landing_page.html', {})
+
 def editar_empleado(request, id_user):
     user = User.objects.get(id=id_user)
     usuario = request.user

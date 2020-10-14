@@ -4,9 +4,9 @@ DBCONFIG['default'] = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'SaaS',
     'USER': 'postgres',
-    'PASSWORD': 'admin',
+    'PASSWORD': 'postgres',
     'HOST': 'localhost',
-    'PORT': 5433, 
+    'PORT': 5432, 
 }
 '''
 import dj_database_url

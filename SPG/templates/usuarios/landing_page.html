@@ -1,0 +1,102 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load bootstrap3 %}
+
+
+
+{% block css %}
+{{ form_empleado.media.css }}
+<style media="screen">
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
+{% endblock css %}
+
+{% block contenido %}
+<header class="masthead bg-primary text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image-->
+        <img class="masthead-avatar mb-5" src="../../static/assets/img/franquicia-icono2.png" alt="" />
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Bienvenidos a SGP APP</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Masthead Subheading
+        <p class="masthead-subheading font-weight-light mb-0">Graphic Artist - Web Designer - Illustrator</p>-->
+    </div>
+</header>
+
+<section class="page-section portfolio" id="portfolio">
+    <div class="container">
+        <!-- Portfolio Section Heading-->
+        <div class="text-center">
+            <h2 class="page-section-heading text-secondary mb-0 d-inline-block">Elige tu plan </h2>
+        </div>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Portfolio Grid Items-->
+        <div class="row justify-content-center">
+            <!-- Portfolio Items-->
+            <div class="col-md-4 col-lg-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">Funcionalidades básicas</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">5.000</h6>
+                      <ul>
+                        <li>Gestión de usuarios</li>
+                        <li>Gestión de clientes</li>
+                        <li>Gestión de productos</li>
+                        <li>Generar reportes en texto</li>
+                        <li>Informe de ventas de todas las franquicias</li>
+                        <li>Generar un archivo en formato json</li>
+                      </ul> 
+                      <a href="#" class="card-link">Comenzar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">Premium</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">15.000</h6>
+                      <ul>
+                        <li>Gestión de usuarios</li>
+                        <li>Gestión de clientes</li>
+                        <li>Gestión de productos</li>
+                        <li>Generar reportes en texto</li>
+                        <li>Informe de ventas de todas las franquicias</li>
+                        <li>Generar un archivo en formato json</li>
+                        <li>Generación de reportes gráficos</li>
+                        <li>Personalización</li>
+                        <li>Generar Mapas de ubicación de clientes</li>
+                      </ul> 
+                      <a href="#" class="card-link">Comenzar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock contenido %}
+
+{% block js %}
+
+<script src="{% static 'dist/js/check_username.js' %}"></script>
+<script src="{% static 'dist/js/validacion_registro.js' %}"></script>
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+
+
+
+{{ form_empleado.media.js }}
+
+{% endblock js %}

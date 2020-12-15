@@ -26,7 +26,7 @@ SECRET_KEY = 'q5k3l90y7b7387^l40j1apg=l^%&_*!!bi7w8^4))=j*=hux&$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.localhost']
 AUTH_USER_MODEL = 'usuarios.User'
 LOGIN_REDIRECT_URL = 'usuarios:home'
 LOGIN_URL = 'usuarios:login'
@@ -34,7 +34,8 @@ LOGOUT_REDIRECT_URL = 'usuarios:login'
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = (
+    'django_tenants',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,10 +44,35 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
 
+
+    'apps.clientes',
+
+)
+
+TENANT_APPS = (
+    # La siguiente app de Django contrib debe estar TENANT_APPS
+    'django.contrib.contenttypes',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'bootstrap3',
+    'bootstrap4',
+    
+
     'apps.usuarios',
-]
+
+)
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+TENANT_MODEL = "clientes.Cliente" # Modelo que hereda de TenantMixin
+TENANT_DOMAIN_MODEL = "clientes.Dominio"  # Modelo que hereda de DomainMixin
 
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware', # Necesario que este en el top de los MIDDLEWARE
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,7 +82,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'SPG.urls'
+ROOT_URLCONF = 'SPG.tenant_urls'
+PUBLIC_SCHEMA_URLCONF = 'SPG.public_urls'
 
 TEMPLATES = [
     {
@@ -68,6 +95,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.request', # Necesario para multitenant
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -86,6 +114,11 @@ WSGI_APPLICATION = 'SPG.wsgi.application'
 DATABASES = DBCONFIG
 
 
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
+
+DOMAIN = '.localhost'
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -108,9 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 

@@ -1,7 +1,7 @@
 
 DBCONFIG = {}
 DBCONFIG['default'] = {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'ENGINE': 'django_tenants.postgresql_backend',
     'NAME': 'SaaS',
     'USER': 'postgres',
     'PASSWORD': 'admin',

@@ -26,12 +26,16 @@ SECRET_KEY = 'q5k3l90y7b7387^l40j1apg=l^%&_*!!bi7w8^4))=j*=hux&$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.localhost']
-AUTH_USER_MODEL = 'usuarios.User'
+ALLOWED_HOSTS = ['.localhost', '.127.0.0.1']
+AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_REDIRECT_URL = 'usuarios:home'
 LOGIN_URL = 'usuarios:login'
 LOGOUT_REDIRECT_URL = 'usuarios:login'
 
+
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['es', 'en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['CO']
+ 
 # Application definition
 
 SHARED_APPS = (
@@ -42,10 +46,17 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap3',
+    
+    'bootstrap4',
+    'widget_tweaks',
+    'django_select2',
+    'cities_light',
+    'send',
+    'social_django',
 
-
+    'apps.usuarios',
     'apps.clientes',
+	
 
 )
 
@@ -58,8 +69,14 @@ TENANT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap3',
+    
+    
     'bootstrap4',
+    'widget_tweaks',
+    'django_select2',
+    'cities_light',
+    'send',
+    'social_django',
     
 
     'apps.usuarios',
@@ -68,7 +85,7 @@ TENANT_APPS = (
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
-TENANT_MODEL = "clientes.Cliente" # Modelo que hereda de TenantMixin
+TENANT_MODEL = "clientes.Tenant" # Modelo que hereda de TenantMixin
 TENANT_DOMAIN_MODEL = "clientes.Dominio"  # Modelo que hereda de DomainMixin
 
 MIDDLEWARE = [
@@ -97,7 +114,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.request', # Necesario para multitenant
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],

@@ -1,36 +1,25 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
 from apps.usuarios.views import *
+from apps.usuarios import views
 
 app_name = 'usuarios'
-
+ 
 urlpatterns = [
-    path('', auth_views.LoginView.as_view(redirect_authenticated_user=True,
+    path('login', LoginView.as_view(redirect_authenticated_user=True,
                     template_name='usuarios/login.html'), name='login'),
+
     path('home', home, name='home'),
     path('landing-page', landing, name='landing'),
-    path('gestion-empleados', signup, name='registro'),
-    path('editar/empleado/<int:id_user>', editar_empleado, name='modificar_empleado'),
-    path('detalle/empleado/<int:id_user>', detalle_empleado, name='detalle_empleado'),
+    path('registro', views.Registro.as_view(), name='registro'),
+    path('crear-empleado', views.CrearEmpleado.as_view(template_name='usuarios/empleado_crear.html'), name='crear_empleado'),
+    path('listar-empleados', views.listar_empleados.as_view(template_name='usuarios/empleado_list.html'), name='listar_empleados'),
+    
+    
 ]
 '''
-    
-    path('registrarse', signup_cliente, name='registro_cliente'),
-    path('', check_recaptcha(auth_views.LoginView.as_view(redirect_authenticated_user=True,
-                                                          template_name='accounts/login.html')), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('ver-clientes', listar_clientes, name='clientes'),
-    
-    path('editar-perfil-empleado', editar_perfil_empleado, name='editar_perfil_empleado'),
-    path('editar-perfil', editar_perfil, name='editar_perfil_cliente'),
-    path('api/consulta_sucursales', get_sucursales_disponibles, name= 'get_sucursales_disponibles'),
-    path('api/consulta_username', checkusername, name='checkusername'),
-    path('notificaciones', consultar_notificaciones, name='notificaciones'),
-    path('api/notificacion_leida', notificacion_leida, name='notificacion_leida'),
-    path('api/consultar_cliente', consultar_cliente, name='consultar_cliente'),
-    path('api/cargar_saldo', cargar_saldo, name='cargar_saldo'),
-    path('consultar-saldo', consultar_saldo, name='consultar_saldo'),
-    path('guardar-saldo', guardar_saldo, name='guardar_saldo'),
-    path('reportes', reportes, name='reportes')
-    '''
+path('editar/empleado/<int:id_user>', editar_empleado, name='modificar_empleado'),
+    path('detalle/empleado/<int:id_user>', detalle_empleado, name='detalle_empleado')
+'''

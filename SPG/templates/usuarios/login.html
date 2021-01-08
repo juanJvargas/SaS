@@ -1,4 +1,8 @@
-{% load static  %}
+
+{% load bootstrap4 %}
+{% load static %}
+{% load staticfiles %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -41,12 +45,13 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form class="user">
+                  <form method="post" enctype="multipart/form-data" action="#" class="billing-form ftco-bg-dark p-3 p-md-5">
+                    {% csrf_token %} 
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      {% bootstrap_field form.username show_label=False %}
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                      {% bootstrap_field form.password show_label=False %}
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -54,9 +59,10 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
-                      Login
-                    </a>
+                    <div class="text-center w-full p-t-20 p-b-10 mt-10 mb-10">
+                      <input class="btn btn-primary py-4 px-4"  type="submit"  value="Iniciar Sesión" />
+
+                    </div>
                     <hr>
                     <a href="index.html" class="btn btn-google btn-user btn-block">
                       <i class="fab fa-google fa-fw"></i> Login with Google

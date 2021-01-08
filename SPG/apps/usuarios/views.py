@@ -1,41 +1,82 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
-from apps.usuarios.forms import SignUpForm, EditarEmpleado, EditarEmpleadoExtra
-from apps.usuarios.models import User
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.hashers import make_password
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import ListView
+from django.db import connection
+from django.urls import reverse_lazy
 
-def listar_empleados():
-    return User.get_empleados()
 
-def signup(request):
-    # Usuario que hizo la peticion a la funcion (usuario que esta en la sesion)
-    #usuario = request.user
-    # Validacion para cuando el administrador (is_staff)
-    #if usuario.is_staff or True:
-    if True: 
-        if request.method == 'POST':
-            form = SignUpForm(request.POST)
-            #if form.is_valid() and user_data.is_valid() and request.recaptcha_is_valid:
-            if form.is_valid():
-                #messages.success(request, 'Empleado registrado exitosamente')
+from apps.usuarios.forms import *
+from apps.usuarios.models import Usuario
+from apps.clientes.models import *
 
-                user = form.save(commit=False)
-                user.save()
+ 
 
-                return render(request, 'usuarios/signup.html',
-                              {'form': SignUpForm(), 'empleados': listar_empleados()})
-            else:
-                #messages.error(request, 'Por favor corrige los errores')
-                return render(request, 'usuarios/signup.html', {'form': form, 'empleados': listar_empleados()})
-        else:
-            form = SignUpForm()
-            return render(request, 'usuarios/signup.html',
-                          {'form': form, 'empleados': listar_empleados()})
-    # En caso de que el usuario no sea admin se redirije al home y se muestra mensaje de error
-    else:
-        messages.error(request, 'No estas autorizado para realizar esta acción')
-        return redirect('usuarios:home')
+
+class Registro(SuccessMessageMixin, CreateView):
+    model = Usuario
+    fields = ['first_name', 'last_name', 'documento', 'ciudad', 'barrio', 'direccion', 'telefono', 'username', 'email', 'password']
+
+    success_message = "Gracias por registrarte"
+    def form_valid(self, form):
+        form_data =form.cleaned_data
+        try:
+            if form_data['password']:
+                form.instance.password= make_password(form_data['password'])
+        except KeyError:
+            pass
+        return super(Registro, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(Registro, self).get_context_data(**kwargs)
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        context['usuario'] = self.request.user
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("usuarios:login")
+
+class CrearEmpleado(SuccessMessageMixin, CreateView):
+    model = Usuario
+    fields = ['first_name', 'last_name', 'documento', 'ciudad', 'barrio', 'direccion', 'telefono', 'username', 'email',
+              'password']
+
+    success_message = "Empleado creado exitosamente"
+    def form_valid(self, form):
+        form.instance.is_staff = True
+        form_data =form.cleaned_data
+        try:
+            if form_data['password']:
+                form.instance.password= make_password(form_data['password'])
+        except KeyError:
+            pass
+
+        return super(CrearEmpleado, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CrearEmpleado, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("usuarios:listar_empleados")
+
+
+class listar_empleados(ListView):
+    model = Usuario
+
+    def get_queryset(self):
+        return Usuario.objects.filter(is_superuser=False, is_staff=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(listar_empleados, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        return context
 
 
 
@@ -46,47 +87,3 @@ def home(request):
 def landing(request):
     usuario = request.user
     return render(request, 'usuarios/landing_page.html', {})
-
-def editar_empleado(request, id_user):
-    user = User.objects.get(id=id_user)
-    usuario = request.user
-    #Quitar el or true cuando se deje lsito el login 
-    if usuario.is_staff or True:
-        if request.method == 'POST':
-            form = EditarEmpleado(request.POST, instance=user)
-            form_empleado_extra = EditarEmpleadoExtra(request.POST, instance=user)
-            if form.is_valid() and form_empleado_extra.is_valid():
-                form.save()
-                form_empleado_extra.save()
-                messages.success(request, 'Has modificado el empleado exitosamente!')
-                return redirect('usuarios:registro')
-            else:
-                messages.error(request, 'Por favor corrige los errores')
-                return render(request, 'usuarios/editar_empleado.html', {'form': form,
-                                                                         'form_empleado_extra': form_empleado_extra})
-
-        else:
-            form = EditarEmpleado(instance=user)
-            form_empleado_extra = EditarEmpleadoExtra(instance=user)
-            return render(request, 'usuarios/editar_empleado.html', {'form': form,
-                                                                     'form_empleado_extra': form_empleado_extra})
-
-    else:
-        messages.error(request, 'No estas autorizado para realizar esta acción')
-        return redirect('usuarios:home')
-
-def detalle_empleado(request, id_user):
-    user = User.objects.get(id=id_user)
-    usuario = request.user
-    #Quitar el or true cuando se deje lsito el login 
-    if usuario.is_staff or True:
-        if request.method == 'GET':
-            return render(request, 'usuarios/detalle_empleado.html', {'datos': user})
-        elif request.method == 'POST':
-            return render(request, 'usuarios/signup.html',
-                              {'form': SignUpForm(), 'empleados': listar_empleados()})
-
-    else:
-        messages.error(request, 'No estas autorizado para realizar esta acción')
-        return redirect('usuarios:home')
-		

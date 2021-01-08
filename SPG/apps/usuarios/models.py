@@ -1,29 +1,39 @@
 from django.db import models
+from cities_light.models import City
 from django.contrib.auth.models import AbstractUser
 
 
-class User(AbstractUser):
-    telefono = models.CharField(max_length=11)
-    cedula = models.CharField(max_length=11, unique=True)
-    direccion = models.CharField(max_length=50)
-    tenant = models.CharField(max_length=50)
-    cargos = (('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Cliente', 'Cliente'))
-    cargo = models.CharField(max_length=9, choices=cargos, default='Gerente')
-    activo = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'cedula', 'email', 'is_active', 'cargo', 'telefono'
-                        ,'cargo']
+class Usuario(AbstractUser):
+
+    documento = models.CharField(max_length=20)
+    ciudad = models.ForeignKey(City, on_delete=models.PROTECT, related_name='cities_light_city', null=True)
+    barrio = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200)
+    telefono = models.CharField(max_length=20)
     USERNAME_FIELD = 'username'
+    estilo = models.CharField(max_length=50, null=True)
 
-    def __str__(self):
-        return self.cedula + ' - ' + self.get_full_name()
+    @staticmethod
+    def get_total_clientes():
+        total = Usuario.objects.filter(is_staff=False, is_superuser=False).count()
+        return total
 
+    @staticmethod
+    def crear_admin():
+        total_usuarios = Usuario.objects.all().count()
+        if total_usuarios == 0:
+            password = "admin"
+            usuario = Usuario.objects.create_user('admin', 'admin@correo.com', password)
+            usuario.set_password(password)
+            usuario.first_name = 'Administrador'
+            usuario.is_superuser = True
+            usuario.is_staff = True
+            usuario.save()
+    
     def get_empleados():
         try:
             empleados = User.objects.filter(cargo__in=('Gerente', 'Vendedor', 'Cliente'))
             return empleados
         except User.DoesNotExist:
             return None
-    
 

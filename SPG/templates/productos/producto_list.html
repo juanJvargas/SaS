@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{# Load the tag library #}
+{% load static %}
+{% load staticfiles %}
+
+{% block titulo %}Inventario{% endblock titulo %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'dist/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'coffee_template/css/producto-listar.css' %}">
+
+{% endblock css %}
+
+{% block contenido %}
+
+    <section class="ftco-section center">
+        <div class="container">
+            <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'usuarios:home' %}">Home</a></span>
+                <span>Inventario</span></p>
+            <form action="#" class="billing-form ftco-bg-dark p-3 p-md-5">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 ftco-animate">
+                        <h3 class="text3 mb-4 billing-heading">Inventario</h3>
+                    </div>
+                    <div class="col-xl-2 ftco-animate" >
+                        <p><a href="{% url 'productos:producto_crear' %}" style="width: 145px;" class="btn btn-primary p-2">Agregar Producto</a></p>
+                    </div>
+                </div>
+                <div class="table-responsive">
+
+                    <table id="example" class="table table-striped">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th style="width: 16%">Nombre</th>
+                            <th style="width: 8%">Tipo</th>
+                            <th style="width: 26%">Descripcion</th>
+                            <th style="width: 8%">Precio</th>
+                            <th style="width: 16%">Stock</th>
+                            <th style="width: 26%">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for producto in producto_list %}
+                            <tr>
+                                <td  style="width: 16%" >{{producto.nombre}}</td>
+                                <td  style="width: 8%" >{{producto.tipo}}</td>
+                                <td  style="width: 26%">{{producto.descripcion}}</td>
+                                <td  style="width: 8%">{{producto.precio}}</td>
+                                <td  style="width: 16%">{{ producto.cantidad}}</td>
+                                <td style="width: 26%">
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock contenido %}
+
+{% block js %}
+    <script type="text/javascript" language="javascript" src="{% static 'dist/js/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" language="javascript" src="{% static 'dist/js/jquery.dataTables.min.js' %}"></script>
+    <script type="text/javascript" language="javascript" src="{% static 'dist/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+    </script>
+
+{% endblock js %}

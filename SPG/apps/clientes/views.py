@@ -60,5 +60,38 @@ def tenant_crear(request):
 
 def tenants_listar(request):
     usuario = request.user
+    desactivados = Tenant.objects.filter(estado=False)
     dominios = Dominio.objects.exclude(tenant__schema_name='public').select_related('tenant')
-    return render(request, 'clientes/tenant_list.html', {'dominios': dominios, 'usuario': usuario})
+    return render(request, 'clientes/tenant_list.html', {'dominios': dominios, 'usuario': usuario, 'desactivados': desactivados})
+
+def tenant_modificar(request, id_tenant):
+    usuario = request.user
+    tenant = Tenant.objects.get(id=id_tenant)
+    if request.method == 'POST':
+        form = TenantForm(request.POST, request.FILES, instance=tenant)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tenant modificada exitosamente!')
+            return redirect('clientes:tenants_listar')
+        else:
+            messages.error(request, 'Por favor corrige los errores')
+            return render(request, 'clientes/tenant_form.html', {'form': form, 'usuario': usuario})
+    else:
+        form = TenantForm(instance=tenant)
+        return render(request, 'clientes/tenant_form.html', {'form': form, 'usuario': usuario})
+
+ 
+def tenant_desactivar(request, id_tenant):
+    tenant = Tenant.objects.get(id=id_tenant)
+    tenant.estado = False
+    tenant.save()
+    Dominio.objects.get(tenant_id=id_tenant).delete()
+    return redirect('clientes:tenants_listar')
+
+
+def tenant_activar(request, id_tenant):
+    tenant = Tenant.objects.get(id=id_tenant)
+    tenant.estado = True
+    tenant.save()
+    Dominio.objects.create(domain='%s%s' % (tenant.schema_name, settings.DOMAIN), is_primary=True, tenant=tenant)
+    return redirect('clientes:tenants_listar')

@@ -29,10 +29,9 @@ class Estilos(models.Model):
 
 class Paquete(models.Model):
     ESTILOS = (
-        ("Mora", "Mora"),
-        ("Dorado", "Dorado"),
-        ("Indigo", "Indigo"),
-        ("Blanco", "Blanco"),
+        ("Basico", "Basico"),
+        ("Medio", "Medio"),
+        ("Profesional", "Profesional"),
     )
     nombre = models.CharField(max_length=20)
     estilos = models.ManyToManyField(Estilos)

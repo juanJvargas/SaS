@@ -1,0 +1,211 @@
+{% extends 'index.html' %}
+{# Load the tag library #}
+{% load bootstrap4 %}
+{% load static %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block titulo %}{{object.tipo}} | {{object.nombre}}{% endblock titulo %}
+
+{% block contenido %}
+    <section class="ftco-section">
+        <div class="container">
+            <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'usuarios:home' %}">Home</a></span>
+                <span class="mr-2"><a href="{% url 'productos:tienda' %}">Tienda</a></span>
+                <span>Detalles del producto</span></p>
+            <div class="row">
+
+                <div class="col-lg-6 mb-5 ftco-animate">
+                    {% if object.imagen  %}
+                        <a href="{{object.imagen.url}}" class="image-popup"><img src="{{object.imagen.url}}" class="img-fluid" alt="{{object.nombre}}"></a>
+                    {% else %}
+                        <a href="#" class="image-popup"><img src="{% static 'imagenes (acomodar)/no_image.jpg' %}" class="img-fluid" alt="{{object.nombre}}"></a>
+                    {% endif %}
+                </div>
+                <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+                    <h3 class="text3">{{object.nombre}}</h3>
+                    <p class="price"><span>${{object.precio}}</span></p>
+                    <p>{{object.descripcion}}</p>
+                    <div class="row mt-4">
+                        <div class="input-group col-md-6 d-flex mb-3">
+	             	<span class="input-group-btn mr-2">
+	                	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
+	                   <i class="icon-minus"></i>
+	                	</button>
+	            		</span>
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                            <span class="input-group-btn ml-2">
+	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+	                     <i class="icon-plus"></i>
+	                 </button>
+	             	</span>
+                        </div>
+                    </div>
+                    <p><a href="#" class="btn btn-primary py-3 px-5">Agregar al Carrito</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--AQUÍ VA EL ÚLTIMO PRODUCTO DE CADA TIPO DE PRODUCTO -->
+    <section class="ftco-gallery">
+        <div class="container">
+            <div class="row justify-content-center mb-5 pb-3">
+                <div class="col-md-7 heading-section ftco-animate text-center">
+                    <span class="subheading">Acompáñalo</span>
+                    <h2 class="mb-4">con alguno de éstos productos</h2>
+                </div>
+            </div>
+            <div class="row">
+                {% if not object.tipo == "Carne/Pollo" and carne %}
+                        <div class="col-md-3">
+                            <div class="menu-entry">
+                                {% if carne.imagen  %}
+                                    <a href="{% url 'productos:item' carne.id %}" class="img" style="background-image: url({{carne.imagen.url}});"></a>
+                                {% else %}
+                                    <a href="{% url 'productos:item' carne.id %}" class="img" style="background-image: url({% static 'imagenes (acomodar)/no_image.jpg' %});"></a>
+                                {% endif %}
+                                <div class="text text-center pt-4">
+                                    <h3><a href="{% url 'productos:item' carne.id %}">{{ carne.nombre }}</a></h3>
+                                    {% if carne.descripcion|length < 31 %}
+                                        <p>{{ carne.descripcion }}</p>
+                                    {% else %}
+                                        <p>{{ carne.descripcion|truncatechars:30 }}</p>
+                                    {% endif %}
+                                    <p class="price"><span>${{ carne.precio }}</span></p>
+                                    <p><a href="{% url 'carrito:agregar_a_carrito' carne.id %}" class="btn btn-primary btn-outline-primary">Agregar Al carrito</a></p>
+                                </div>
+                            </div>
+                        </div>
+                {% endif %}
+
+                {% if not object.tipo == "Pasta" and pasta %}
+                        <div class="col-md-3">
+                            <div class="menu-entry">
+                                {% if pasta.imagen  %}
+                                    <a href="{% url 'productos:item' pasta.id %}" class="img" style="background-image: url({{pasta.imagen.url}});"></a>
+                                {% else %}
+                                    <a href="{% url 'productos:item' pasta.id %}" class="img" style="background-image: url({% static 'imagenes (acomodar)/no_image.jpg' %});"></a>
+                                {% endif %}
+                                <div class="text text-center pt-4">
+                                    <h3><a href="{% url 'productos:item' pasta.id %}">{{ pasta.nombre }}</a></h3>
+                                    {% if pasta.descripcion|length < 31 %}
+                                        <p>{{ pasta.descripcion }}</p>
+                                    {% else %}
+                                        <p>{{ pasta.descripcion|truncatechars:30 }}</p>
+                                    {% endif %}
+                                    <p class="price"><span>${{ pasta.precio }}</span></p>
+                                    <p><a href="{% url 'carrito:agregar_a_carrito' pasta.id %}" class="btn btn-primary btn-outline-primary">Agregar Al carrito</a></p>
+                                </div>
+                            </div>
+                        </div>
+                {% endif %}
+
+                {% if not object.tipo == "Comida Rápida" and rapida %}
+                        <div class="col-md-3">
+                            <div class="menu-entry">
+                                {% if rapida.imagen  %}
+                                    <a href="{% url 'productos:item' rapida.id %}" class="img" style="background-image: url({{rapida.imagen.url}});"></a>
+                                {% else %}
+                                    <a href="{% url 'productos:item' rapida.id %}" class="img" style="background-image: url({% static 'imagenes (acomodar)/no_image.jpg' %});"></a>
+                                {% endif %}
+                                <div class="text text-center pt-4">
+                                    <h3><a href="{% url 'productos:item' rapida.id %}">{{ rapida.nombre }}</a></h3>
+                                    {% if rapida.descripcion|length < 31 %}
+                                        <p>{{ rapida.descripcion }}</p>
+                                    {% else %}
+                                        <p>{{ rapida.descripcion|truncatechars:30 }}</p>
+                                    {% endif %}
+                                    <p class="price"><span>${{ rapida.precio }}</span></p>
+                                    <p><a href="{% url 'carrito:agregar_a_carrito' rapida.id %}" class="btn btn-primary btn-outline-primary">Agregar Al carrito</a></p>
+                                </div>
+                            </div>
+                        </div>
+                {% endif %}
+
+                {% if not object.tipo == "Infantil" and infantil %}
+                    <div class="col-md-3">
+                        <div class="menu-entry">
+                            {% if infantil.imagen  %}
+                                <a href="{% url 'productos:item' infantil.id %}" class="img" style="background-image: url({{infantil.imagen.url}});"></a>
+                            {% else %}
+                                <a href="{% url 'productos:item' infantil.id %}" class="img" style="background-image: url({% static 'imagenes (acomodar)/no_image.jpg' %});"></a>
+                            {% endif %}
+                            <div class="text text-center pt-4">
+                                <h3><a href="{% url 'productos:item' infantil.id %}">{{ infantil.nombre }}</a></h3>
+                                {% if infantil.descripcion|length < 31 %}
+                                    <p>{{ infantil.descripcion }}</p>
+                                {% else %}
+                                    <p>{{ infantil.descripcion|truncatechars:30 }}</p>
+                                {% endif %}
+                                <p class="price"><span>${{ infantil.precio }}</span></p>
+                                <p><a href="{% url 'carrito:agregar_a_carrito' infantil.id %}" class="btn btn-primary btn-outline-primary">Agregar Al carrito</a></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if not object.tipo == "Bebida" and bebida %}
+                    <div class="col-md-3">
+                        <div class="menu-entry">
+                            {% if bebida.imagen  %}
+                                <a href="{% url 'productos:item' bebida.id %}" class="img" style="background-image: url({{bebida.imagen.url}});"></a>
+                            {% else %}
+                                <a href="{% url 'productos:item' bebida.id %}" class="img" style="background-image: url({% static 'imagenes (acomodar)/no_image.jpg' %});"></a>
+                            {% endif %}
+                            <div class="text text-center pt-4">
+                                <h3><a href="{% url 'productos:item' bebida.id %}">{{ bebida.nombre }}</a></h3>
+                                {% if bebida.descripcion|length < 31 %}
+                                    <p>{{ bebida.descripcion }}</p>
+                                {% else %}
+                                    <p>{{ bebida.descripcion|truncatechars:30 }}</p>
+                                {% endif %}
+                                <p class="price"><span>${{ bebida.precio }}</span></p>
+                                <p><a href="{% url 'carrito:agregar_a_carrito' bebida.id %}" class="btn btn-primary btn-outline-primary">Agregar Al carrito</a></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock contenido %}
+{% block js %}
+    <script>
+        $(document).ready(function(){
+
+            var quantitiy=0;
+            $('.quantity-right-plus').click(function(e){
+
+                // Stop acting like a button
+                e.preventDefault();
+                // Get the field name
+                var quantity = parseInt($('#quantity').val());
+
+                // If is not undefined
+
+                $('#quantity').val(quantity + 1);
+
+
+                // Increment
+
+            });
+
+            $('.quantity-left-minus').click(function(e){
+                // Stop acting like a button
+                e.preventDefault();
+                // Get the field name
+                var quantity = parseInt($('#quantity').val());
+
+                // If is not undefined
+
+                // Increment
+                if(quantity>0){
+                    $('#quantity').val(quantity - 1);
+                }
+            });
+
+        });
+    </script>
+{% endblock js %}

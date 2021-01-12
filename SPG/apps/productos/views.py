@@ -89,5 +89,20 @@ class Tienda(ListView):
         context['usuario'] = self.request.user
         schema = connection.schema_name
         context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+class Item(DetailView):
+    model = Producto 
+
+    def get_context_data(self, **kwargs):
+        context = super(Item, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        context['carne'] = Producto.objects.filter(tipo="Carne/Pollo", estado=True).last()
+        context['pasta'] = Producto.objects.filter(tipo="Pasta", estado=True).last()
+        context['rapida'] = Producto.objects.filter(tipo="Comida Rápida", estado=True).last()
+        context['infantil'] = Producto.objects.filter(tipo="Infantil", estado=True).last()
+        context['bebida'] = Producto.objects.filter(tipo="Bebida", estado=True).last()
         context['orden'] = get_orden_usuario_pendiente(self.request)
         return context

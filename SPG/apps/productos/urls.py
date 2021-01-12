@@ -15,4 +15,5 @@ urlpatterns = [
 
     path('nuestro-menu/', views.Tienda.as_view(template_name='productos/menu.html'), name='menu'),
     path('tienda/', views.Tienda.as_view(template_name='productos/tienda.html'), name='tienda'),
+    path('ver-item/<int:pk>', views.Item.as_view(template_name='productos/item.html'), name='item'),
 ]

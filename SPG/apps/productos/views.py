@@ -39,6 +39,45 @@ class IngredienteCrear(SuccessMessageMixin, CreateView):
         return reverse_lazy("productos:ingredientes_listar")
 
 
+class IngredienteDetalle(DetailView):
+    model = Ingrediente
+
+    def get_context_data(self, **kwargs):
+        context = super(IngredienteDetalle, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+class IngredienteActualizar(SuccessMessageMixin, UpdateView):
+    model = Ingrediente
+    success_message = 'Ingrediente modificado con exito'
+    fields = '__all__'
+
+    def get_context_data(self, **kwargs):
+        context = super(IngredienteActualizar, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("productos:ingredientes_listar")
+
+
+class IngredienteEliminar(DeleteView):
+    model = Ingrediente
+
+    def get_context_data(self, **kwargs):
+        context = super(IngredienteEliminar, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("productos:ingredientes_listar")
+
 
 
 class ProductosListar(ListView): 
@@ -78,6 +117,59 @@ class ProductoCrear(SuccessMessageMixin, CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy("productos:productos_listar")
 
+class ProductoDetalle(DetailView):
+    model = Producto
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductoDetalle, self).get_context_data(**kwargs)
+        prod = Producto.objects.get(pk = int(self.kwargs.get('pk')))
+        context['ingredientes_list'] = prod.ingredientes.all()
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+class ProductoActualizar(SuccessMessageMixin, UpdateView):
+    model = Producto
+    success_message = 'Producto modificado con exito'
+    form_class = ProductoForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        total = form.cleaned_data.get('precio');
+        for ing in form.cleaned_data.get('ingredientes'):
+            total += ing.precio_por_unidad
+
+        form.instance.precio = total
+        return super(ProductoActualizar, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductoActualizar, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("productos:productos_listar")
+
+
+class ProductoEliminar(DeleteView):
+    model = Producto
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductoEliminar, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        schema = connection.schema_name
+        context['tenant'] = Tenant.objects.get(schema_name=schema)
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy("productos:productos_listar")
+
+
+
+
 class Tienda(ListView):
     model = Producto
 
@@ -93,7 +185,7 @@ class Tienda(ListView):
 
 class Item(DetailView):
     model = Producto 
-
+ 
     def get_context_data(self, **kwargs):
         context = super(Item, self).get_context_data(**kwargs)
         context['usuario'] = self.request.user

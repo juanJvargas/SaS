@@ -129,8 +129,9 @@ dmypy.json
 .pyre/
 
 migrations/
-multitenant/*
+multitenant/
 .gitignore
 maravillapp.zip
 multitenant.zip
 pasos.txt
+media/

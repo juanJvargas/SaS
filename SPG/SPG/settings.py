@@ -55,6 +55,7 @@ SHARED_APPS = (
     'social_django',
 
     'apps.usuarios',
+    'apps.productos', 
     'apps.clientes',
 	
 
@@ -80,6 +81,7 @@ TENANT_APPS = (
     
 
     'apps.usuarios',
+    'apps.productos',
 
 )
 

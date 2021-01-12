@@ -196,5 +196,4 @@ class Item(DetailView):
         context['rapida'] = Producto.objects.filter(tipo="Comida Rápida", estado=True).last()
         context['infantil'] = Producto.objects.filter(tipo="Infantil", estado=True).last()
         context['bebida'] = Producto.objects.filter(tipo="Bebida", estado=True).last()
-        context['orden'] = get_orden_usuario_pendiente(self.request)
         return context

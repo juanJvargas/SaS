@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.hashers import make_password
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.db import connection
 from django.urls import reverse_lazy
 
@@ -78,7 +78,26 @@ class listar_empleados(ListView):
         context['usuario'] = self.request.user
         return context
 
+class UsuarioDetalle(DetailView):
+    model = Usuario
 
+    def get_context_data(self, **kwargs):
+        context = super(UsuarioDetalle, self).get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        return context
+
+
+def usuario_desactivar(request, id_usuario):
+    usuario = Usuario.objects.get(id=id_usuario)
+    usuario.is_active = False
+    usuario.save()
+    return redirect('usuarios:listar_empleados')
+
+def usuario_activar(request, id_usuario):
+    usuario = Usuario.objects.get(id=id_usuario)
+    usuario.is_active = True
+    usuario.save()
+    return redirect('usuarios:listar_empleados')
 
 def home(request):
     usuario = request.user

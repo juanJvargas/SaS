@@ -65,8 +65,13 @@
                                         {{ usuario.is_active|yesno:"Activo,Inactivo"}}
                                     </td>
                                     <td style="width: 14%">
-
-                                      </td>
+                                        <p class="mb-1"><a href="{% url 'usuarios:empleado_detalle' usuario.id %}" class="btn btn-outline-info custom-btn">Ver detalle</a></p>
+                                        {% if usuario.is_active == True %}
+                                            <p><a href="{% url 'usuarios:usuario_desactivar' usuario.id %}" class="btn btn-outline-danger custom-btn">Desactivar</a></p>
+                                        {% else %}
+                                            <p><a href="{% url 'usuarios:usuario_activar' usuario.id %}" class="btn btn-outline-primary custom-btn">Activar</a></p>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
